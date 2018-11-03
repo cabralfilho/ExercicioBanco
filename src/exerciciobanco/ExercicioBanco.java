@@ -24,15 +24,12 @@ public class ExercicioBanco {
                            +"(1) Abrir Conta \n"
                            + "(2) Acessar Conta");
 
-       int opcao = (Integer.parseInt(JOptionPane.showInputDialog(null, "O que deseja fazer?")));
         
-        switch(opcao){
-            
-            case 1:
-            abrirConta();
-            case 2:
-            acessarConta();
-        }
+       int opcao = (Integer.parseInt(JOptionPane.showInputDialog(null, "O que deseja fazer?")));
+       
+       Conta c2 = new Conta(1, "CP", "Jander Silva", 5624.25);
+       
+
         
     }
     

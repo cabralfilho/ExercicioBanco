@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  *
  * @author Jander
  */
-public class Conta {
+public class Conta implements ContaDAO{
     
     public int numConta;
     private String tipo;
@@ -19,21 +19,21 @@ public class Conta {
     private double saldo;
     private boolean status;
     
-        public Conta(int numConta, String tipo, String dono, double saldo){
-            this.numConta = numConta;
-            this.tipo = tipo;
-            this.dono = dono;
-            this.saldo = saldo;
-        }
-        
-        public Conta(){
-            this.saldo =  0;
-            this.status = false;
-        }
+    public Conta(int numConta, String tipo, String dono, double saldo){
+        this.numConta = numConta;
+        this.tipo = tipo;
+        this.dono = dono;
+        this.saldo = saldo;
+    }
     
+    public Conta(){
+        this.saldo =  0;
+        this.status = false;
+    }
     
+    @Override
     public String abrirConta(String tipo){
-        this.setStatus(true); //Define a conta como aberta.
+        this.status = true; //Define a conta como aberta.
         tipo = JOptionPane.showInputDialog("Deseja abrir uma Conta Poupança(CP) ou uma Conta Concorrente(CC)?");
         
        switch(tipo){
@@ -44,68 +44,68 @@ public class Conta {
        }
        return "Conta aberta com sucesso!";
     }
-    
-    public String fecharConta(){
-        if (this.getSaldo() < 0){ //Verificação de saldo negativo.
-            return "Não é possível fechar a conta com o saldo negativo.";
-        } else if (this.getSaldo() > 0){ //Vericação de saldo positivo;
-            return "Não é possível fechar a conta pois ainda há dinheiro.";
-        } else { //Fechamento da conta
-           this.setStatus(false); 
-            return "Conta fechada com sucesso!";
-        }
-    }
-    
-    public String depositar(double valor){
-        if (this.isStatus() == true){
-            valor = (Double.parseDouble(JOptionPane.showInputDialog(null,"Digite a quantia a ser depositada:")));
-            this.setSaldo(this.getSaldo() + valor); //Adionar o valor do deposito à conta.
-                return "Valor depositado com sucesso!";
-        } else { //Verifica a possibilidade da conta estar fechada.
-            return "Erro: Esta conta está fechada.";
-        }
-    }    
-    
-    public String sacar(double valor){
-        valor = (Double.parseDouble(JOptionPane.showInputDialog(null,"Digite a quantia a ser sacada:")));
+    // @Override
+    // public String fecharConta(){
+    //     if (this.getSaldo() < 0){ //Verificação de saldo negativo.
+    //         return "Não é possível fechar a conta com o saldo negativo.";
+    //     } else if (this.getSaldo() > 0){ //Vericação de saldo positivo;
+    //         return "Não é possível fechar a conta pois ainda há dinheiro.";
+    //     } else { //Fechamento da conta
+    //        this.setStatus(false); 
+    //         return "Conta fechada com sucesso!";
+    //     }
+    // }
+    // @Override
+    // public String depositar(double valor){
+    //     if (this.isStatus() == true){
+    //         valor = (Double.parseDouble(JOptionPane.showInputDialog(null,"Digite a quantia a ser depositada:")));
+    //         this.setSaldo(this.getSaldo() + valor); //Adionar o valor do deposito à conta.
+    //             return "Valor depositado com sucesso!";
+    //     } else { //Verifica a possibilidade da conta estar fechada.
+    //         return "Erro: Esta conta está fechada.";
+    //     }
+    // }    
+    // @Override
+    // public String sacar(double valor){
+    //     valor = (Double.parseDouble(JOptionPane.showInputDialog(null,"Digite a quantia a ser sacada:")));
         
-        if ((this.isStatus() == true) && (this.getSaldo() >= valor)){
-            this.setSaldo(this.getSaldo() - valor);
-            return "Valor depositado com sucesso!";
-        }
+    //     if ((this.isStatus() == true) && (this.getSaldo() >= valor)){
+    //         this.setSaldo(this.getSaldo() - valor);
+    //         return "Valor depositado com sucesso!";
+    //     }
         
-        else if ((this.isStatus() == true) && (this.getSaldo() <= 0)){
-            return "Erro: Você não possui saldo para sacar.";
-        }
+    //     else if ((this.isStatus() == true) && (this.getSaldo() <= 0)){
+    //         return "Erro: Você não possui saldo para sacar.";
+    //     }
         
-        else if ((this.isStatus() == true) && (this.getSaldo() < valor)){
-            this.setSaldo(this.getSaldo() - this.getSaldo());
-            return "Aviso: O saldo é inferior ao valor de saque pedido.";
-        }
+    //     else if ((this.isStatus() == true) && (this.getSaldo() < valor)){
+    //         this.setSaldo(this.getSaldo() - this.getSaldo());
+    //         return "Aviso: O saldo é inferior ao valor de saque pedido.";
+    //     }
     
-        else {
-            return "Erro: Esta conta está fechada.";
-        }
-    }
-    
-    public void pagarMensalidade(int valor){
-        while (this.isStatus() != false){
-        if (this.getTipo().equals("CC")){ //Define o valor da mensalidade para CONTAS CORRENTES.
-            valor = 12;
-        }
-        else if (this.getTipo().equals("CP")){ //Define o valor da mensalidade para CONTAS POUPANÇAS.
-            valor = 20;
-        }
+    //     else {
+    //         return "Erro: Esta conta está fechada.";
+    //     }
+    // }
+    // @Override
+    // public void pagarMensalidade(int valor){
+    //     while (this.isStatus() != false){
+    //     if (this.getTipo().equals("CC")){ //Define o valor da mensalidade para CONTAS CORRENTES.
+    //         valor = 12;
+    //     }
+    //     else if (this.getTipo().equals("CP")){ //Define o valor da mensalidade para CONTAS POUPANÇAS.
+    //         valor = 20;
+    //     }
 
-            if (this.getSaldo() > valor){ // Condição de sucesso
-                this.setSaldo(this.getSaldo() - valor);
-                    System.out.println("Mensalidade paga com Sucesso");
-            } else if (this.getSaldo() < valor){ //Exceção de saldo insuficiente.
-                    System.out.println("Erro: Conta não possui saldo suficiente.");
-            }
-        }
-        System.out.println("Erro: Conta fechada.");
-    }
+    //         if (this.getSaldo() > valor){ // Condição de sucesso
+    //             this.setSaldo(this.getSaldo() - valor);
+    //                 System.out.println("Mensalidade paga com Sucesso");
+    //         } else if (this.getSaldo() < valor){ //Exceção de saldo insuficiente.
+    //                 System.out.println("Erro: Conta não possui saldo suficiente.");
+    //         }
+    //     }
+    //     System.out.println("Erro: Conta fechada.");
+    // }
     
     /**
      * @return the numConta
